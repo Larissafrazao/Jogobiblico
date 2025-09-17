@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Caça aos Tesouros Bíblicos</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background:#f2f2f2; }
+        #Quiz { max-width: 500px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        button { margin: 10px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; background:#4CAF50; color: white; }
+        button:hover { background:#45a049; }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <h2>Escolha o livro</h2>
+        <button onclick="iniciarQuiz('genesis')">Gênesis</button>
+        <button onclick="iniciarQuiz('exodo')">Êxodo</button>
+        <button onclick="iniciarQuiz('juises')">Juíses</button>
+        <button onclick="iniciarQuiz('mateus')">Mateus</button>
+    </div>
+    <div id="Quiz" style="display:none;">
+        <h2 id="pergunta"></h2>
+        <div id="opcoes"></div>
+        <p id="resultado"></p>
+        <button id="proxima">Próxima</button>
+    </div>
+
+    <script>
+        //Perguntas separadas por categoria
+        const categoria = {
+           genesis:[
+            {pergunta:"Quem foi o primeiro homem criado por Deus?",opcoes:["Abraão","Adão","Noé","Jacó"], resposta: 1 },
+            {pergunta: "Quem construiu a arca?", opcoes: ["Moisés","Noé","José","Abraão"], resposta: 1 },
+            {pergunta: "Quem foi a primeira mulher criada por Deus?", opcoes: ["Sara","Ester","Eva","Rebeca"], resposta: 2 },
+            {pergunta: "Qual era o nome do jardim onde Adão e Eva viviam?", opcoes: ["Jardim das Oliveiras","Jardim de Éden","Jardim do Éufrates","Jardim da Promessa"], resposta: 1 },
+            {pergunta: "Quem matou Abel?", opcoes: ["Caim","Noé","Isaque","José"], resposta: 0 },
+            {pergunta: "Quantos dias levou Deus para criar o mundo?", opcoes: ["5","6","7","40"], resposta: 1 },
+            {pergunta: "O que Deus criou no sétimo dia?", opcoes: ["Animais","O homem","Nada, Ele descansou","A lua"], resposta: 2 },
+            {pergunta: "Quem foi o filho da promessa de Abraão?", opcoes: ["Isaque","Ismael","Jacó","José"], resposta: 0 },
+            {pergunta: "Qual era o nome da esposa de Abraão?", opcoes: ["Raquel","Sara","Rebeca","Lia"], resposta: 1 },
+            {pergunta: "Quem foi vendido como escravo pelos irmãos?", opcoes: ["Jacó","José","Isaque","Esaú"], resposta: 1 },
+            {pergunta: "Qual era o sinal da aliança de Deus com Noé?", opcoes: ["O arco-íris","O sol","O fogo","A estrela"], resposta: 0 }
+           ],
+            exodo: [
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Qual foi a primeira praga enviada ao Egito?", opcoes: ["Moscas","Água transformada em sangue","Sapos","Piolhos"], resposta: 1 },
+            { pergunta: "Qual foi a última praga do Egito?", opcoes: ["Trevas","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+            { pergunta: "Quem libertou o povo de Israel do Egito?", opcoes: ["Josué","Moisés","Arão","Davi"], resposta: 1 },
+           ],
+           mateus: [
+            { pergunta: "Quem batizou Jesus no rio Jordão?", opcoes: ["Pedro","João Batista","Tiago","André"], resposta: 1 }
+        ]
+        };
+
+        let indice = 0;
+        let pontos = 0;
+
+        function iniciarQuiz(nomeCategoria){
+            perguntas= categoria[nomeCategoria];//pega as perguntas do livro escolhido
+            indice = 0;
+            pontos = 0; 
+            document.getElementById("menu").style.display= "none";//escolhe menu
+            document.getElementById("Quiz").style.display= "block";//mostrar quiz
+            mostrarPergunta();
+
+        }
+
+        function mostrarPergunta() {
+            document.getElementById("resultado").innerText = "";
+            const q = perguntas[indice];
+            document.getElementById("pergunta").innerText = q.pergunta;
+
+            const opcoesDiv = document.getElementById("opcoes");
+            opcoesDiv.innerHTML = ""; 
+            q.opcoes.forEach((opcao, i) => {
+                const btn = document.createElement("button");
+                btn.innerText = opcao;
+                btn.onclick = () => verificarResposta(i);
+                opcoesDiv.appendChild(btn);
+            });
+        }
+
+        function verificarResposta(i) {
+            const q = perguntas[indice];
+            if (i === q.resposta) {
+                pontos++;
+                document.getElementById("resultado").innerText = "✅ Resposta certa!";
+            } else {
+                document.getElementById("resultado").innerText = "❌ Resposta errada!";
+            }
+        }
+
+        document.getElementById("proxima").onclick = () => {
+            indice++;
+            if (indice < perguntas.length) {
+                mostrarPergunta();
+            } else {
+                document.getElementById("Quiz").innerHTML = `<h2>Fim do jogo!</h2>
+                <p>Sua pontuação: ${pontos} / ${perguntas.length}</p>
+                <button onclick="location.reload()">voltar ao menu</button>`
+                
+        }
+        };
+    </script>  
+</body>
+</html>
